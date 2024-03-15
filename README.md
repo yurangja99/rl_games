@@ -1,5 +1,15 @@
 # RL Games: High performance RL library  
 
+## Forked by yurangja99
+
+Part of my [physics-simulators](https://github.com/yurangja99/physics-simulators.git) repository. 
+You can refer to the repository to run this repository. 
+
+### Poetry environment setting
+Modified `pyproject.toml` and `poetry.lock` to fit my environment. 
+
+<hr/>
+
 ## Discord Channel Link 
 * https://discord.gg/hnYRq7DsQh
 
