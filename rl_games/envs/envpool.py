@@ -98,8 +98,8 @@ class Envpool(IVecEnv):
         info['observation_space'] = self.observation_space
         return info
 
-
-
+    def render(self, mode="human"):
+        pass
 
 def create_envpool(**kwargs):
     return Envpool("", kwargs.pop('num_actors', 16), **kwargs)

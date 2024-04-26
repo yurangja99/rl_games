@@ -57,6 +57,8 @@ class BraxEnv(IVecEnv):
         info['observation_space'] = self.observation_space
         return info
 
+    def render(self, mode="human"):
+        pass
 
 def create_brax_env(**kwargs):
     return BraxEnv("", kwargs.pop('num_actors', 256), **kwargs)
