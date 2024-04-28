@@ -25,9 +25,9 @@ wandb = "^0.12.11"
 
 ale-py = {version = "^0.7", optional = false}
 AutoROM = {version = "^0.4.2", optional = false, extras = ["accept-rom-license"]}
-brax = {version = "==0.1.2", optional = false}
+brax = {version = "==0.10.3", optional = false}
 jax = {version = "==0.4.25", optional = false}
-mujoco = {version = "==2.2.0", optional = false}
+mujoco = {version = "==3.1.4", optional = false}
 envpool = {version = "^0.7.0", optional = false}
 
 [[tool.poetry.source]]

@@ -8,6 +8,9 @@ You can refer to the repository to run this repository.
 ### Poetry environment setting
 Modified `pyproject.toml` and `poetry.lock` to fit my environment. 
 
+### Support recent version of [brax](https://github.com/google/brax.git)
+The original code supports brax 0.1.2, so refactored [`BraxEnv`](./rl_games/envs/brax.py) code to support brax 0.10.3 version. 
+
 <hr/>
 
 ## Discord Channel Link 

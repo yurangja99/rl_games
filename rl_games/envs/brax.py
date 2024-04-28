@@ -2,6 +2,7 @@ from rl_games.common.ivecenv import IVecEnv
 import gym
 import numpy as np
 import torch.utils.dlpack as tpack
+from typing import Optional
 
 def jax_to_torch(tensor):
     from jax._src.dlpack import (to_dlpack,)
@@ -15,6 +16,23 @@ def torch_to_jax(tensor):
     tensor = from_dlpack(tensor)
     return tensor
 
+def create_gym_env(
+    env_name: str,
+    batch_size: Optional[int] = None,
+    seed: int = 0,
+    backend: Optional[str] = None,
+    **kwargs
+):
+    from brax import envs
+    from brax.envs.wrappers import gym
+    
+    env = envs.create(env_name=env_name, batch_size=batch_size, **kwargs)
+    
+    if batch_size is None:
+        return gym.GymWrapper(env, seed=seed, backend=backend)
+    elif batch_size <= 0:
+        raise ValueError("`batch_size` should either be None or a positive integer.")
+    return gym.VectorGymWrapper(env, seed=seed, backend=backend)
 
 class BraxEnv(IVecEnv):
     def __init__(self, config_name, num_actors, **kwargs):
@@ -23,11 +41,12 @@ class BraxEnv(IVecEnv):
 
         self.batch_size = num_actors
         env_name=kwargs.pop('env_name', 'ant')
-        self.env = envs.create_gym_env(env_name=env_name,
-                   batch_size= self.batch_size,
-                   seed = 0,
-                   backend = 'gpu'
-                   )
+        self.env = create_gym_env(
+            env_name=env_name,
+            batch_size=self.batch_size,
+            seed=0,
+            backend='gpu'
+        )
 
         obs_high = np.inf * np.ones(self.env._env.unwrapped.observation_size)
         self.observation_space = gym.spaces.Box(-obs_high, obs_high, dtype=np.float32)
