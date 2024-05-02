@@ -25,8 +25,13 @@ def create_gym_env(
 ):
     from brax import envs
     from brax.envs.wrappers import gym
+
+    if env_name == "Dexmv_Relocate":
+        from rl_games.envs.dexmv.relocate import Relocate # register dexmv relocate env
+        envs.register_environment(env_name="Dexmv_Relocate", env_class=Relocate)
     
-    env = envs.create(env_name=env_name, batch_size=batch_size, **kwargs)
+    env = envs.create(env_name=env_name, batch_size=batch_size, backend="mjx", **kwargs)
+    print(f"Brax Backend: {env._backend}")
     
     if batch_size is None:
         return gym.GymWrapper(env, seed=seed, backend=backend)

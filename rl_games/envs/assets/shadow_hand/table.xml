@@ -1,0 +1,67 @@
+<mujoco model="table_test">
+  <asset>
+    <!-- <mesh file="/root/dexmv-sim/hand_imitation/env/utils/../models/assets/ycb/visual/025_mug/textured_simple_blender.msh" name="mug_visual_mesh" scale="0.8 0.8 0.8"/> -->
+    
+    <!-- BACKGROUND -->
+    <texture builtin="gradient" height="256" rgb1=".9 .9 1." rgb2=".2 .3 .4" type="skybox" width="256"/>
+    
+    <!-- FLOOR -->
+    <texture file="../textures/wood-tiles.png" type="2d" name="texplane"/>
+    <material name="floorplane" reflectance="0.01" shininess="0.0" specular="0.0" texrepeat="2 2" texture="texplane" texuniform="true"/>
+    
+    <!-- TABLE -->
+    <texture file="../textures/ceramic.png" type="cube" name="tex-ceramic"/>
+    <material name="table_ceramic" reflectance="0.0" shininess="0.0" specular="0.2" texrepeat="1 1" texture="tex-ceramic" />
+    
+    <!-- TABLE LEG -->
+    <texture file="../textures/steel-brushed.png" type="cube" name="tex-steel-brushed"/>
+    <material name="table_legs_metal" reflectance="0.8" shininess="0.8" texrepeat="1 1" texture="tex-steel-brushed" />
+  </asset>
+
+  <!-- WORLD -->
+  <worldbody>
+    <!-- GLOBAL LIGHT -->
+    <light name="light1" directional="false" diffuse="0.8 0.8 0.8" specular="0.3 0.3 0.3" pos="1 1 4" dir="0 -0.15 -1" castshadow="false"/>
+    <light name="light2" directional="false" diffuse="0.8 0.8 0.8" specular="0.3 0.3 0.3" pos="-3 -3 4" dir="0 -0.15 -1" castshadow="false"/>
+
+    <!-- GLOBAL CAMERA -->
+    <camera name="zeroview" mode="fixed" pos="0 0 2" quat="1 0 0 0"/>
+    <camera name="frontview" mode="fixed" pos="1 0 1" quat="0.65 0.2705981 0.2705981 0.6532815"/>
+    <camera name="backview" mode="fixed" pos="0 0.8 1.2" quat="0 0 0.2815 0.9595"/>
+    <camera name="sideview" mode="fixed" pos="-1.3 -0.6 0.5" quat=" 0.6781121 0.5164697 -0.3290275 -0.4064037"/>
+    
+    <!-- FLOOR -->
+    <geom name="floor" size="1.5 1.5 0.125" pos="0 0 -1" type="plane" contype="1" conaffinity="1" material="floorplane"/>
+    
+    <!-- TABLE -->
+    <body name="table" pos="0 0 -0.025" >
+      <geom name="table_plane" pos="0 0 0" size="0.6 0.6 0.025" type="box" contype="1" conaffinity="1" material="table_ceramic"/>
+      <geom name="table_leg1" pos="0.5 0.5 -0.4875" size="0.025 0.4875" type="cylinder" contype="0" conaffinity="0" material="table_legs_metal"/>
+      <geom name="table_leg2" pos="0.5 -0.5 -0.4875" size="0.025 0.4875" type="cylinder" contype="0" conaffinity="0" material="table_legs_metal"/>
+      <geom name="table_leg3" pos="-0.5 0.5 -0.4875" size="0.025 0.4875" type="cylinder" contype="0" conaffinity="0" material="table_legs_metal"/>
+      <geom name="table_leg4" pos="-0.5 -0.5 -0.4875" size="0.025 0.4875" type="cylinder" contype="0" conaffinity="0" material="table_legs_metal"/>
+    </body>
+
+    <!-- TARGET -->
+    <body name="target" pos="0 0 0.3" quat="1 0 0 0" >
+      <!-- <geom name="target_geom" type="mesh" mesh="mug_visual_mesh" contype="0" conaffinity="0" rgba="0 1 0 0.125"/> -->
+      <geom name="geom_target" type="sphere" size="0.04" contype="0" conaffinity="0" rgba="0 1 0 0.125"/>
+    </body>
+
+    <!-- OBJECT -->
+    <body name="object" pos="0 0 0.04" quat="1 0 0 0" >
+      <freejoint/>
+      <!-- <geom name="target_geom" type="mesh" mesh="mug_visual_mesh" contype="0" conaffinity="0" rgba="0 1 0 0.125"/> -->
+      <geom name="geom_object" type="sphere" size="0.04" contype="1" conaffinity="1" rgba="1 1 1 1"/>
+    </body>
+  </worldbody>
+  
+  <contact>
+    <pair geom1="table_plane" geom2="geom_object"/>
+    <pair geom1="table_plane" geom2="geom_target"/>
+    <pair geom1="geom_target" geom2="geom_object"/>
+  </contact>
+  
+  <!-- HAND -->
+  <include file="right_hand.xml"/>
+</mujoco>
